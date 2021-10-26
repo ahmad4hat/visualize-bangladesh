@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { csv, scaleBand, scaleLinear, max } from "d3";
+import { csv, scaleBand, scaleLinear, max, format } from "d3";
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import Row from "../../components/MaleFemalePopulation/Row/Row";
+import Axis from "../../components/MaleFemalePopulation/Axis/Axis";
 
 const SVG = styled.svg`
   background-color: #f9f9f9;
@@ -15,7 +16,7 @@ const Div = styled.div`
 `;
 
 const width = 1700;
-const height = 2200;
+const height = 1200;
 const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
 const innerHeight = height - margin.top - margin.bottom;
@@ -60,16 +61,34 @@ const MaleFemalePopulation = () => {
 
   const xScaleFemale = scaleLinear()
     .domain(xScaleGeneral.domain())
-    .range([0, innerWidth / 2]);
+    .range([0, innerWidth / 2])
+    .nice();
 
   const xScaleMale = scaleLinear()
     .domain(xScaleGeneral.domain())
-    .range([0, innerWidth / 2]);
+    .range([0, innerWidth / 2])
+    .nice();
+
+  const formatNumber = format(".2s");
+
+  const maleTicks = xScaleMale.ticks();
+  const femaleTicks = xScaleFemale.ticks();
 
   return (
     <Div>
       <SVG width={width} height={height}>
         <g transform={`translate(${margin.left},${margin.top})`}>
+          <Axis
+            {...{
+              maleTicks,
+              innerWidth,
+              xScaleMale,
+              innerHeight,
+              formatNumber,
+              femaleTicks,
+              xScaleFemale,
+            }}
+          />
           {data.map((d) => (
             <Row
               key={d.year}
@@ -82,6 +101,7 @@ const MaleFemalePopulation = () => {
                 d,
                 selected,
                 setSelected,
+                formatNumber,
               }}
             />
           ))}
