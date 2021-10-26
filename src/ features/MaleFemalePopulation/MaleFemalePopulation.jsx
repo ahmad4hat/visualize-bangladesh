@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import { csv, scaleBand, scaleLinear, max } from "d3";
 import styled from "@emotion/styled";
+import { useTheme } from "@emotion/react";
+import Row from "../../components/MaleFemalePopulation/Row/Row";
 
 const SVG = styled.svg`
   background-color: #f9f9f9;
 `;
 
-const width = 1200;
+const Div = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const width = 1700;
 const height = 2200;
 const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
@@ -15,6 +23,8 @@ const innerWidth = width - margin.left - margin.right;
 
 const MaleFemalePopulation = () => {
   const [data, setData] = useState();
+  const [selected, setSelected] = useState(null);
+  const theme = useTheme();
 
   useEffect(() => {
     (async () => {
@@ -40,7 +50,7 @@ const MaleFemalePopulation = () => {
   const yScale = scaleBand()
     .domain(data.map(yearAccessor))
     .range([0, innerHeight])
-    .paddingInner(0.3)
+    .paddingInner(0.1)
     .paddingOuter(0.1);
 
   const xScaleGeneral = scaleLinear().domain([
@@ -50,44 +60,34 @@ const MaleFemalePopulation = () => {
 
   const xScaleFemale = scaleLinear()
     .domain(xScaleGeneral.domain())
-    .range([0, width / 2 - 40]);
+    .range([0, innerWidth / 2]);
 
-  //   console.log(xScaleFemale.domain());
   const xScaleMale = scaleLinear()
     .domain(xScaleGeneral.domain())
-    .range([0, width / 2 - 40]);
+    .range([0, innerWidth / 2]);
 
   return (
-    <div>
+    <Div>
       <SVG width={width} height={height}>
         <g transform={`translate(${margin.left},${margin.top})`}>
           {data.map((d) => (
-            <>
-              <text x={innerWidth / 2} y={yScale(d.year)} key={d.year}>
-                {d.year}
-              </text>
-              <rect
-                key={d.year + "2"}
-                y={yScale(d.year)}
-                fill={"#21231"}
-                x={innerWidth / 2 + 40}
-                width={xScaleFemale(d.female)}
-                height={yScale.bandwidth()}
-              />
-              <rect
-                key={d.year + "3"}
-                y={yScale(d.year)}
-                fill={"#2321ff"}
-                x={width / 2 - xScaleMale(d.male)}
-                width={xScaleMale(d.male)}
-                height={yScale.bandwidth()}
-              />
-              {console.log({ male: xScaleFemale(d.female) })}
-            </>
+            <Row
+              key={d.year}
+              {...{
+                theme,
+                innerWidth,
+                yScale,
+                xScaleFemale,
+                xScaleMale,
+                d,
+                selected,
+                setSelected,
+              }}
+            />
           ))}
         </g>
       </SVG>
-    </div>
+    </Div>
   );
 };
 
