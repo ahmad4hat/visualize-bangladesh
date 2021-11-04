@@ -5,9 +5,7 @@ import { useTheme } from "@emotion/react";
 import Row from "../../components/MaleFemalePopulation/Row/Row";
 import Axis from "../../components/MaleFemalePopulation/Axis/Axis";
 
-const SVG = styled.svg`
-  background-color: #f9f9f9;
-`;
+const SVG = styled.svg``;
 
 const Div = styled.div`
   display: flex;
@@ -17,7 +15,7 @@ const Div = styled.div`
 
 const width = 1700;
 const height = 1200;
-const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+const margin = { top: 40, right: 20, bottom: 40, left: 20 };
 
 const innerHeight = height - margin.top - margin.bottom;
 const innerWidth = width - margin.left - margin.right;
@@ -73,7 +71,8 @@ const MaleFemalePopulation = () => {
 
   const maleTicks = xScaleMale.ticks();
   const femaleTicks = xScaleFemale.ticks();
-
+  maleTicks.shift();
+  femaleTicks.shift();
   return (
     <Div>
       <SVG width={width} height={height}>
@@ -87,6 +86,7 @@ const MaleFemalePopulation = () => {
               formatNumber,
               femaleTicks,
               xScaleFemale,
+              theme,
             }}
           />
           {data.map((d) => (

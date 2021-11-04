@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import React from "@emotion/react";
+
 
 const Text = styled.text`
   text-anchor: middle;
@@ -56,12 +58,11 @@ const maleFemalePopulation = ({
       onMouseEnter={() => setSelected(d)}
       onMouseLeave={() => setSelected(null)}
     >
-      {numbersElement}
       <Rect
         y={yScale(d.year)}
         x={innerWidth / 2}
         theme={theme}
-        fill={isSelected ? "none" : theme.colors.pink}
+        fill={isSelected ? "white" : theme.colors.pink}
         stroke={isSelected ? theme.colors.pink : "none"}
         rx={2}
         width={xScaleFemale(d.female)}
@@ -72,11 +73,12 @@ const maleFemalePopulation = ({
         theme={theme}
         x={innerWidth / 2 - xScaleMale(d.male)}
         width={xScaleMale(d.male)}
-        fill={isSelected ? "none" : theme.colors.blue}
+        fill={isSelected ? "white" : theme.colors.blue}
         stroke={isSelected ? theme.colors.blue : "none"}
         rx={2}
         height={yScale.bandwidth()}
       />
+      {numbersElement}
       {!isSelected && (
         <Text x={innerWidth / 2} y={yScale(d.year) + 18} theme={theme}>
           {d.year}

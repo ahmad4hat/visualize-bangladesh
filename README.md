@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Visualize Bangladesh
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The purpose of this open source project is make interactive data visualization element to understand complex problem in Bangladesh.
 
 ## Available Scripts
 

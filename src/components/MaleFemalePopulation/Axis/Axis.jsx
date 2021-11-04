@@ -3,14 +3,17 @@ import React from "react";
 
 const Line = styled.line`
   stroke-width: 0.1rem;
-  stroke: #cccccc;
+  stroke: ${(props) => props.theme.colors.offWhite};
 `;
 
 const Text = styled.text`
   text-anchor: middle;
+  opacity: 0.5;
+  transform: translate(0px, -0.8rem);
 `;
 
 const Axis = ({
+  theme,
   maleTicks,
   innerWidth,
   xScaleMale,
@@ -43,7 +46,7 @@ const Axis = ({
             x2={innerWidth / 2 + xScaleFemale(tick)}
             y2={innerHeight}
           />
-          <Text x={innerWidth / 2 + xScaleFemale(tick)} y={0}>
+          <Text x={innerWidth / 2 + xScaleFemale(tick)} y={0} theme={theme}>
             {formatNumber(tick)}
           </Text>
         </g>
